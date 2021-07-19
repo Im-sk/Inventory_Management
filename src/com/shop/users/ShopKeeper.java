@@ -1,4 +1,4 @@
-package com.shop.domain;
+package com.shop.users;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,14 +17,11 @@ public class ShopKeeper {
 		File file = new File("Inventory.txt");
 		
 		public ShopKeeper() throws IOException {
-				//use tree set to add values of id and increment the last id
-			
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			String nameNumberString;
 			
 			while (raf.getFilePointer() < raf.length()) {
-			     nameNumberString = raf.readLine();
-		           
+			     	nameNumberString = raf.readLine();           
 		            List<String> lineSplit =  new ArrayList<>();
 		            lineSplit = Arrays.asList(nameNumberString.split(","));
 		            if(lineSplit.size() == 5) {
@@ -33,9 +30,6 @@ public class ShopKeeper {
 			 }
 		}
 		
-	
-	
-	
 	public void createFile() {
 //		     
 	        try {
@@ -66,13 +60,10 @@ public class ShopKeeper {
 		price = scn.nextInt();
 		
 		System.out.println("Enter total product stock :");
-		stock = scn.nextInt();
-		
+		stock = scn.nextInt();		
 	}
-	
-	
-	public void addProduct() throws IOException {
 		
+	public void addProduct() throws IOException {		
 		createFile();
 		takeInput();
 		++id;	
@@ -80,34 +71,25 @@ public class ShopKeeper {
 	}
 	
 	
-	
 	public void insert(int id,String name, int price, int stock,String company) throws IOException {
-		// use this pointer to insert data
 		if(!file.exists()) {
             file.createNewFile();
 		}
 		
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");
         boolean found = false;
-        String nameNumberString,tempname;
-        int tempid;
-        
+        String nameNumberString,tempname = null;
+        int tempid = 0;       
         
         while (raf.getFilePointer() < raf.length()) {
-     	   
-            // reading line from the file.
             nameNumberString = raf.readLine();
+        	List<String> lineSplit =  new ArrayList<>();
+			lineSplit = Arrays.asList(nameNumberString.split(","));
 
-            // splitting the string to get name and
-            // number
-            String[] lineSplit
-                = nameNumberString.split(",");
-
-            // separating name and number.
-            tempid = Integer.valueOf(lineSplit[0])   ;
-            tempname =lineSplit[1];
-
-            // if condition to find existence of record.
+			if(lineSplit.size() == 5) {
+				tempid = Integer.parseInt(lineSplit.get(0))   ;  
+				tempname = lineSplit.get(1);
+			}
             if (tempname == name || tempid == id) {
                 found = true;
                 break;
@@ -121,14 +103,11 @@ public class ShopKeeper {
            System.out.println("Product added.");
            raf.close();
        }else {
-     	  raf.close();   	  
-          
+     	  raf.close();   	      
      	  System.out.println("Product already exist.");
        }
-    
 	}
-	
-	
+		
 	public void removeProduct() throws IOException {
 		if(!file.exists()) {
             file.createNewFile();
@@ -145,28 +124,21 @@ public class ShopKeeper {
 		boolean found = false;
 		
         while (raf.getFilePointer() < raf.length()) {
-      	   
-            
-            nameNumberString = raf.readLine();
-           
+            nameNumberString = raf.readLine();         
             List<String> lineSplit =  new ArrayList<>();
             lineSplit = Arrays.asList(nameNumberString.split(","));
-//          String[] lineSplit = nameNumberString.split(",");
 
             if(lineSplit.size() == 5) {
-            
             	tempid = Integer.parseInt(lineSplit.get(0))   ;            	          
             	}
             
             if(tempid == deleteid) {
             		found = true;
             		break;
-            	}
-            
+            	}            
         	}
         	
-        	if(found == true) {
-        		
+        	if(found == true) {        		
         		 File tmpFile = new File("temp.txt");
         		 RandomAccessFile tmpraf = new RandomAccessFile(tmpFile, "rw");
         		 raf.seek(0);
@@ -185,7 +157,6 @@ public class ShopKeeper {
         	         }
         	         tmpraf.writeBytes(nameNumberString);
         	         tmpraf.writeBytes(System.lineSeparator());
-        	         
         		 }
         		 
         		 raf.seek(0);
@@ -194,11 +165,7 @@ public class ShopKeeper {
                       raf.writeBytes(tmpraf.readLine());
                       raf.writeBytes(System.lineSeparator());
                   }
-   
-                  // Set the length of the original file to that of temporary.
                   raf.setLength(tmpraf.length());
- 
-                  // Closing the resources.
                   tmpraf.close();
                   raf.close();
                   tmpFile.delete();
@@ -213,19 +180,13 @@ public class ShopKeeper {
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");       
         String nameNumberString,tempname,tempcompany;
         int tempid,tempprice,tempstock;
-        		
-	     
+ 	     
         while (raf.getFilePointer() < raf.length()) {
-     	   
-           
-            nameNumberString = raf.readLine();
-           
+            nameNumberString = raf.readLine();         
             List<String> lineSplit =  new ArrayList<>();
             lineSplit = Arrays.asList(nameNumberString.split(","));
-//          String[] lineSplit = nameNumberString.split(",");
 
-            if(lineSplit.size() == 5) {
-            
+            if(lineSplit.size() == 5) {           
             	tempid = Integer.parseInt(lineSplit.get(0))   ;
             	tempname =lineSplit.get(1);
             	tempcompany =lineSplit.get(2);
@@ -239,35 +200,28 @@ public class ShopKeeper {
                        +"Price: " +tempprice  + "\n"
                        +"Total Stock: " +tempstock  + "\n"
                        );
-            	}
-            
+            	}           
         	}
-		
+        
         raf.close();
 		}
 	
 	
 	public void searchProduct() throws IOException {
-
 		Scanner scn = new Scanner(System.in); 
 		System.out.println("Enter the name to search for : ");
 		
 		String n = scn.nextLine();
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");       
         String nameNumberString,tempname,tempcompany;
-        int tempid,tempprice,tempstock;
-        		
+        int tempid,tempprice,tempstock;        		
 	     
         while (raf.getFilePointer() < raf.length()) {
-     	   
-           
-            nameNumberString = raf.readLine();
-           
+            nameNumberString = raf.readLine();          
             List<String> lineSplit =  new ArrayList<>();
             lineSplit = Arrays.asList(nameNumberString.split(","));
 
-            if(lineSplit.size() == 5) {
-            
+            if(lineSplit.size() == 5) {            
             	tempid = Integer.parseInt(lineSplit.get(0))   ;
             	tempname =lineSplit.get(1);
             	tempcompany =lineSplit.get(2);
@@ -283,12 +237,10 @@ public class ShopKeeper {
                        +"Total Stock: " +tempstock  + "\n"
                        );
             	}
-            }
+              }
         	}
 		
-        raf.close();
-		
-			
+        raf.close();		
 	}
 	
 	
@@ -307,33 +259,23 @@ public class ShopKeeper {
 		String nameNumberString,tempname,tempcompany;
         int tempid = 0,tempprice,tempstock;
 		boolean found = false;
-		
-		 
-	        
-		
+	        	
         while (raf.getFilePointer() < raf.length()) {
-      	   
-            
             nameNumberString = raf.readLine();
-           
             List<String> lineSplit =  new ArrayList<>();
             lineSplit = Arrays.asList(nameNumberString.split(","));
-//          String[] lineSplit = nameNumberString.split(",");
 
-            if(lineSplit.size() == 5) {
-            
+            if(lineSplit.size() == 5) {           
             	tempid = Integer.parseInt(lineSplit.get(0))   ;            	          
             	}
             
             if(tempid == updateid) {
             		found = true;
             		break;
-            	}
-            
+            	}          
         	}
         	
-        	if(found == true) {
-        		
+        	if(found == true) {       		
         		 File tmpFile = new File("temp.txt");
         		 RandomAccessFile tmpraf = new RandomAccessFile(tmpFile, "rw");
         		 raf.seek(0);
@@ -347,8 +289,7 @@ public class ShopKeeper {
         	        	 tempid = Integer.parseInt(lineSplit.get(0))   ;
         	         }
         	         
-        	         if(tempid == updateid) {
-        	        	 // code to update record        	        	
+        	         if(tempid == updateid) {        	        	
         	     		System.out.println("Enter name :");
         	    		tempname = scn.next();
         	    		
@@ -361,12 +302,10 @@ public class ShopKeeper {
         	    		System.out.println("Enter stock :");
         	    		tempstock = scn.nextInt();	 
         	        	nameNumberString = tempid +","+ tempname +","+ tempcompany +","+ tempprice +","+ tempstock;
-        	        	 
         	         }
         	         
         	         tmpraf.writeBytes(nameNumberString);
         	         tmpraf.writeBytes(System.lineSeparator());
-        	         
         		 }
         		 
         		 raf.seek(0);
@@ -375,23 +314,12 @@ public class ShopKeeper {
                       raf.writeBytes(tmpraf.readLine());
                       raf.writeBytes(System.lineSeparator());
                   }
-   
-                  // Set the length of the original file
-                  // to that of temporary.
                   raf.setLength(tmpraf.length());
- 
-                  // Closing the resources.
                   tmpraf.close();
-//                  raf.close();
                   tmpFile.delete();
                   System.out.println(" Record Updated. ");
         	}else {
         		 System.out.println(" Input ID does not exists. ");
-        	}
-       	
-        	
-        		
+        	}   	
 		}
-   
-
 }

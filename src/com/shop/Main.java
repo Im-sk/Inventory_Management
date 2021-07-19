@@ -1,88 +1,73 @@
 package com.shop;
 
-import com.shop.domain.*;
-
 import java.io.IOException;
 import java.util.Scanner;
+
+import com.shop.users.Customer;
+import com.shop.users.ShopKeeper;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
 		Scanner sc = new Scanner(System.in);
-		
 		int num,userchoice,shopchoice,customerchoice;	
-		
 		int cnum,snum;
-		
 		do{
 			System.out.println("*****Welcome***** \nSelect the User :\n1.Customer\n2.Shopkeeper\n3.Exit");
 			num = sc.nextInt();
-		switch(num) {
-		
-		case 1: //System.out.println("create customer object");
+			switch(num) {
+			case 1: //System.out.println("create customer object");
 				Customer cu = new Customer();
 				do {
 					System.out.println("Customer Menu : \n1.List \n2.Search \n3.Buy");
-					
 					cnum = sc.nextInt();
 					switch(cnum) {
 					case 1:cu.listProduct();
-						   break;
+					break;
 					case 2: cu.searchProduct();
-						   break;
+					break;
 					case 3:cu.buyProduct();
-						   break;
-						   
+					break;
 					default: System.out.println("Incorrect Choice !");
-							
-					
 					}
-					
 					System.out.println("Enter 1 to continue, 0 for main menu ");
-					
 					customerchoice = sc.nextInt();					
 				}while(customerchoice == 1);
-				
-			    break;
-		case 2: //System.out.println("create shopkeeper object");
+
+				break;
+			case 2: //System.out.println("create shopkeeper object");
 				ShopKeeper sh = new ShopKeeper();
 				do {
 					System.out.println("Shopkeeper Menu : \n1.Add \n2.Remove \n3.List \n4.Search \n5. Edit");
-					
+
 					//switch case
 					snum = sc.nextInt();
 					switch(snum) {
 					case 1:sh.addProduct();
-						   break;
+					break;
 					case 2:sh.removeProduct();
-						   break;
+					break;
 					case 3:sh.listAllProduct();
-						   break;
+					break;
 					case 4:sh.searchProduct();
-						   break;
+					break;
 					case 5:sh.editProduct();
-						   break;
-						   
+					break;
+
 					default: System.out.println("Incorrect Choice !");
 					}
-					System.out.println("Want to continue 1/0");
+					System.out.println("Enter 1 to continue, 0 for main menu");
 					shopchoice = sc.nextInt();					
 				}while(shopchoice == 1);
-			    break;
-		case 3: 
+				break;
+			case 3: 
 				System.out.println("*****Good Bye*****");
 				System.exit(0);
 				break;
-		default: System.out.println("Incorrect choice");
-			
-		}
-		
-	
-		}while(1 == 1);
-		
+			default: System.out.println("Incorrect choice");
 
+			}	
+		}while(1 == 1);	
 	}
-
-
 
 }
