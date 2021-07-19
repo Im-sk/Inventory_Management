@@ -16,18 +16,20 @@ public class Customer {
 		File file = new File("Inventory.txt");
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");       
 		String nameNumberString,tempname,tempcompany;
-		int tempprice;
+		int tempprice,tempid;
 		while (raf.getFilePointer() < raf.length()) {
 			nameNumberString = raf.readLine();
 			List<String> lineSplit =  new ArrayList<>();
 			lineSplit = Arrays.asList(nameNumberString.split(","));
 
 			if(lineSplit.size() == 5) {
+				tempid = Integer.parseInt(lineSplit.get(0));
 				tempname =lineSplit.get(1);
 				tempcompany =lineSplit.get(2);
 				tempprice = Integer.parseInt(lineSplit.get(3));
 				System.out.println(
-						"Name: " +tempname  + "\n"
+								"Id: " +tempid  + "\n"
+								+"Name: " +tempname  + "\n"
 								+"Company Name: " +tempcompany  + "\n"
 								+"Price: " +tempprice  + "\n"                      
 						);
@@ -72,9 +74,7 @@ public class Customer {
 
 	public void buyProduct() throws IOException {
 		File file = new File("Order.txt"); 
-		if (file.createNewFile()) {  
-			System.out.println("File " + file.getName() + " is created successfully.");
-		}
+	
 		Scanner sc = new Scanner(System.in);	
 		int productid;
 		String productname;
@@ -136,16 +136,18 @@ public class Customer {
 		if(found == true) {
 			RandomAccessFile raforder = new RandomAccessFile(file, "rw");
 			productString = productid +","+ productname +","+ creditcard +","+ cvv ;
+			raforder.seek(raforder.length());
 			raforder.writeBytes(productString);
 			raforder.writeBytes(System.lineSeparator());
 			System.out.println("Order placed.");
-			updateInventory(productid,productname);
 			raforder.close();
+			updateInventory(productid,productname);
 		}else {
 			System.out.println("Product details did not match or stock is empty");
 
 		}
 	}
+	
 	public void updateInventory(int id, String name) throws IOException {
 		File file = new File("Inventory.txt");
 		if(!file.exists()) {

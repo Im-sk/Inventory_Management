@@ -69,8 +69,7 @@ public class ShopKeeper {
 		++id;	
 		insert(id,name,price,stock,company);	
 	}
-	
-	
+		
 	public void insert(int id,String name, int price, int stock,String company) throws IOException {
 		if(!file.exists()) {
             file.createNewFile();
@@ -107,7 +106,8 @@ public class ShopKeeper {
      	  System.out.println("Product already exist.");
        }
 	}
-		
+	
+	
 	public void removeProduct() throws IOException {
 		if(!file.exists()) {
             file.createNewFile();
@@ -174,7 +174,7 @@ public class ShopKeeper {
         		 System.out.println("Product does not exist.");
         	}
   	}
-	
+
 	
 	public void listAllProduct() throws IOException {
 		RandomAccessFile raf = new RandomAccessFile(file, "rw");       

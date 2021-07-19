@@ -38,7 +38,7 @@ public class Main {
 			case 2: //System.out.println("create shopkeeper object");
 				ShopKeeper sh = new ShopKeeper();
 				do {
-					System.out.println("Shopkeeper Menu : \n1.Add \n2.Remove \n3.List \n4.Search \n5. Edit");
+					System.out.println("Shopkeeper Menu : \n1.Add \n2.Remove \n3.List \n4.Search \n5.Edit");
 
 					//switch case
 					snum = sc.nextInt();
