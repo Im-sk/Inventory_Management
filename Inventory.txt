@@ -1,0 +1,2 @@
+1,led light,wipro,200,10
+2,keyboard,lled,1000,10
