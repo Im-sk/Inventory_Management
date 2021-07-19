@@ -133,7 +133,7 @@ public class Customer {
 		RandomAccessFile raf = new RandomAccessFile(fileInvent, "rw");
         boolean found = false;
         String nameNumberString,tempname = null;
-        int tempid = 0;
+        int tempid = 0,tempstock=0;
         
         while (raf.getFilePointer() < raf.length()) {
         	
@@ -144,9 +144,12 @@ public class Customer {
         	
             if(lineSplit.size() == 5) {
             	tempid = Integer.parseInt(lineSplit.get(0))   ;
-            	tempname = lineSplit.get(1);            	
+            	tempname = lineSplit.get(1);   
+            	tempstock = Integer.parseInt(lineSplit.get(4))   ;
             	}
-            if (tempname.equals(productname) && productid == tempid) {
+        
+            
+            if (tempname.equals(productname) && productid == tempid && tempstock >0 ) {
                 found = true;
                 break;
             }
@@ -160,20 +163,108 @@ public class Customer {
             raforder.writeBytes(productString);
             raforder.writeBytes(System.lineSeparator());
             System.out.println("Order placed.");
+            updateInventory(productid,productname);
             raforder.close();
         }else {
-        	System.out.println("Product details did not match.");
+        	System.out.println("Product details did not match or stock is empty");
         	
         }
-		
+        
+      
 			
 		}
+	public void updateInventory(int id, String name) throws IOException {
 		
-	public static void main(String args[]) throws IOException {
+		File file = new File("Inventory.txt");
+		if(!file.exists()) {
+            file.createNewFile();
+		}
 		
-		Customer c = new Customer();
-//		c.listProduct();
-//		c.searchProduct();
-		c.buyProduct();
-	}
+		Scanner scn = new Scanner(System.in);
+		int updateid = id;
+		String updatename = name;
+		
+		RandomAccessFile raf = new RandomAccessFile(file, "rw");
+		String nameNumberString,tempname = null,tempcompany = null;
+        int tempid = 0,tempprice = 0,tempstock = 0;
+		boolean found = false;
+		
+		 
+	        
+		
+        while (raf.getFilePointer() < raf.length()) {
+      	   
+            
+            nameNumberString = raf.readLine();
+           
+            List<String> lineSplit =  new ArrayList<>();
+            lineSplit = Arrays.asList(nameNumberString.split(","));
+//          String[] lineSplit = nameNumberString.split(",");
+
+            if(lineSplit.size() == 5) {
+            
+            	tempid = Integer.parseInt(lineSplit.get(0))   ;  
+            	tempname = lineSplit.get(1);
+            	}
+            
+            if(tempid == updateid && name.equals(tempname)) {
+            		found = true;
+            		break;
+            	}
+            
+        	}
+        	
+        	if(found == true) {
+        		
+        		 File tmpFile = new File("temp.txt");
+        		 RandomAccessFile tmpraf = new RandomAccessFile(tmpFile, "rw");
+        		 raf.seek(0);
+        		 
+        		 while (raf.getFilePointer() < raf.length()) {
+        			 nameNumberString = raf.readLine();
+        			 List<String> lineSplit =  new ArrayList<>();
+        	         lineSplit = Arrays.asList(nameNumberString.split(","));
+        			 
+        	         if(lineSplit.size() == 5) {
+        	        	 	tempid = Integer.parseInt(lineSplit.get(0))   ;
+        	            	tempname =lineSplit.get(1);
+        	            	tempcompany =lineSplit.get(2);
+        	            	tempprice = Integer.parseInt(lineSplit.get(3))   ;
+        	            	tempstock = Integer.parseInt(lineSplit.get(4))   ;
+        	         }
+        	         
+        	         if(tempid == updateid && tempname.equals(updatename)) {
+        	        	        	        	
+        	        	tempstock = tempstock -1;
+        	        	nameNumberString = tempid +","+ tempname +","+ tempcompany +","+ tempprice +","+ tempstock;
+        	        	 
+        	         }
+        	         
+        	         tmpraf.writeBytes(nameNumberString);
+        	         tmpraf.writeBytes(System.lineSeparator());
+        	         
+        		 }
+        		 
+        		 raf.seek(0);
+                 tmpraf.seek(0);
+                 while (tmpraf.getFilePointer() < tmpraf.length()) {
+                      raf.writeBytes(tmpraf.readLine());
+                      raf.writeBytes(System.lineSeparator());
+                  }
+   
+                  // Set the length of the original file
+                  // to that of temporary.
+                  raf.setLength(tmpraf.length());
+ 
+                  // Closing the resources.
+                  tmpraf.close();
+//                  raf.close();
+                  tmpFile.delete();
+                  System.out.println(" Inventory Updated. ");
+        	}
+        	
+        		
+		}
+		
+
 }
